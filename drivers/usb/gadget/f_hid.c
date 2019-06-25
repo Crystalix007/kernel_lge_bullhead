@@ -64,7 +64,7 @@ struct f_hidg {
 
 /* Hacky device list to fix f_hidg_write being called after device destroyed.
    It covers only most common race conditions, there will be rare crashes anyway. */
-enum { HACKY_DEVICE_LIST_SIZE = 4 };
+enum { HACKY_DEVICE_LIST_SIZE = 6 };
 static struct f_hidg *hacky_device_list[HACKY_DEVICE_LIST_SIZE];
 static void hacky_device_list_add(struct f_hidg *hidg)
 {

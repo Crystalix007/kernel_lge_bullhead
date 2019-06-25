@@ -62,6 +62,7 @@
 #include "f_hid.h"
 #include "f_hid_android_keyboard.c"
 #include "f_hid_android_mouse.c"
+#include "f_hid_android_u2f.c"
 #include "f_rndis.c"
 #include "rndis.c"
 #include "f_qc_ecm.c"
@@ -2862,7 +2863,7 @@ static struct android_usb_function uasp_function = {
 
 static int hid_function_init(struct android_usb_function *f, struct usb_composite_dev *cdev)
 {
-	return ghid_setup(cdev->gadget, 2);
+	return ghid_setup(cdev->gadget, 3);
 }
 
 static void hid_function_cleanup(struct android_usb_function *f)
@@ -2883,6 +2884,12 @@ static int hid_function_bind_config(struct android_usb_function *f, struct usb_c
 	ret = hidg_bind_config(c, &ghid_device_android_mouse, 1);
 	if (ret) {
 		pr_info("%s: hid_function_bind_config mouse failed: %d\n", __func__, ret);
+		return ret;
+	}
+	printk(KERN_INFO "hid u2f\n");
+	ret = hidg_bind_config(c, &ghid_device_android_u2f, 2);
+	if (ret) {
+		pr_info("%s: hid_function_bind_config u2f failed: %d\n", __func__, ret);
 		return ret;
 	}
 	return 0;
